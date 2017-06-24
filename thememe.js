@@ -19,6 +19,28 @@
 var thememe = {};
 
 
+thememe.UrlParser = {
+    parse: function(url) {
+	var obj = Object.create(thememe.UrlParser);
+	var s1 = url.split('#', 2);
+	if(s1.length == 2) obj.afterHash = s1[1];
+	else obj.afterHash = null;
+	var s2 = s1[0].split('?', 2), paramString;
+	obj.baseUrl = s2[0];
+	obj.params = {};
+	if(s2.length < 2) return obj;
+	paramString = s2[1];
+	var p = paramString.split('&');
+	for(var i = 0; i < p.length; i++) {
+	    var pair = p[i].split('=');
+	    obj.params[pair[0]] = pair[1];
+	}
+	return obj;
+    },
+};
+
+
+
 /*
   Object containig all available themes, and their css files.
   If the value is null, it means that the theme doesn't load any css
