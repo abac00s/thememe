@@ -92,6 +92,13 @@ thememe.loadThemeFromUrl = function() {
     this.loadTheme(this.current_theme);
 }
 
+thememe.updateThemeInUrl = function(url, theme) {
+    var parser = this.UrlParser.parse(url);
+    if(this.themes[theme]) parser.params['thememe'] = theme;
+    else delete parser.params['thememe'];
+    return parser.generateUrl();
+} 
+
 /*
   Load given theme.
 */
@@ -114,12 +121,8 @@ thememe.loadTheme = function(theme) {
 
     var elements = document.getElementsByClassName('thememe-update');
     for(var i = 0; i < elements.length; i++) {
-	var e = elements[i];
-	if(e.href) {
-	    var parser = thememe.UrlParser.parse(e.href);
-	    if(theme) parser.params['thememe'] = theme;
-	    else delete parser.params['thememe'];
-	    e.href = parser.generateUrl();
+	if(elements[i].href) {
+	    elements[i].href = this.updateThemeInUrl(elements[i].href, theme);
 	}
     }
 }
