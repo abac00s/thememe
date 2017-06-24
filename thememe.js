@@ -103,13 +103,25 @@ thememe.loadTheme = function(theme) {
     
     this.current_theme = theme;
     var css = this.themes[theme];
-    if(css == null) return;
-    var el = document.createElement('link');
-    el.setAttribute('rel', 'stylesheet');
-    el.setAttribute('type', 'text/css');
-    el.setAttribute('href', css);
-    el.id = 'thememe-loaded';
-    document.head.appendChild(el);
+    if(css) {
+	var el = document.createElement('link');
+	el.setAttribute('rel', 'stylesheet');
+	el.setAttribute('type', 'text/css');
+	el.setAttribute('href', css);
+	el.id = 'thememe-loaded';
+	document.head.appendChild(el);
+    }
+
+    var elements = document.getElementsByClassName('thememe-update');
+    for(var i = 0; i < elements.length; i++) {
+	var e = elements[i];
+	if(e.href) {
+	    var parser = thememe.UrlParser.parse(e.href);
+	    if(theme) parser.params['thememe'] = theme;
+	    else delete parser.params['thememe'];
+	    e.href = parser.generateUrl();
+	}
+    }
 }
 
 /*
