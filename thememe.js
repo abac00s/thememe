@@ -41,7 +41,23 @@ thememe.UrlParser = {
 	});
 	return obj;
     },
+
+    generateUrl: function() {
+	var url = this.baseUrl;
+	var keys = Object.keys(this.params);
+	if(keys.length > 0) {
+	    url += '?';
+	    for(var i = 0; i < keys.length; i++){
+		url += keys[i] + '=' + this.params[keys[i]];
+		if(i < keys.length - 1) url += '&';
+	    }
+	}
+	if(this.afterHash)
+	    url += '#' + this.afterHash;
+	return url;
+    },
 };
+
 
 
 /*
